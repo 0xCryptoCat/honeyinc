@@ -1,0 +1,22 @@
+{
+    "sourceFile": "src/components/ResearchModal.tsx",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 1,
+            "patches": [
+                {
+                    "date": 1757495803705,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1757495872479,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,5 @@\n-import { X, Beaker, Zap } from \"lucide-react\";\n+import { X, Beaker } from \"lucide-react\";\n import { Button } from \"./ui/button\";\n \n interface ResearchItem {\n   id: string;\n"
+                }
+            ],
+            "date": 1757495803705,
+            "name": "Commit-0",
+            "content": "import { X, Beaker, Zap } from \"lucide-react\";\nimport { Button } from \"./ui/button\";\n\ninterface ResearchItem {\n  id: string;\n  name: string;\n  description: string;\n  cost: number;\n  completed: boolean;\n  icon: string;\n}\n\ninterface ResearchModalProps {\n  isOpen: boolean;\n  onClose: () => void;\n}\n\nexport function ResearchModal({ isOpen, onClose }: ResearchModalProps) {\n  if (!isOpen) return null;\n\n  const research: ResearchItem[] = [\n    { id: \"1\", name: \"Efficient Foraging\", description: \"Bees collect 25% more honey per trip\", cost: 500, completed: true, icon: \"🍯\" },\n    { id: \"2\", name: \"Hive Expansion\", description: \"Increase maximum bee capacity by 10\", cost: 1000, completed: false, icon: \"🏠\" },\n    { id: \"3\", name: \"Queen Bee\", description: \"Unlocks royal honey production\", cost: 2500, completed: false, icon: \"👑\" },\n    { id: \"4\", name: \"Pollination Network\", description: \"Bees work 15% faster\", cost: 750, completed: false, icon: \"🌸\" },\n  ];\n\n  return (\n    <div className=\"fixed inset-0 z-50 flex items-center justify-center p-4\">\n      <div className=\"absolute inset-0 bg-black/50\" onClick={onClose} />\n      \n      <div className=\"relative bg-white rounded-3xl p-6 shadow-2xl border-2 border-amber-200 max-w-md w-full max-h-[80vh] overflow-hidden\">\n        {/* Header */}\n        <div className=\"flex items-center justify-between mb-6\">\n          <div className=\"flex items-center space-x-3\">\n            <div className=\"w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center\">\n              <Beaker className=\"w-6 h-6 text-amber-600\" />\n            </div>\n            <h2 className=\"text-gray-800 font-bold text-xl\">Research Lab</h2>\n          </div>\n          <button\n            onClick={onClose}\n            className=\"w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center text-gray-600 hover:bg-gray-200 transition-colors\"\n          >\n            <X className=\"w-5 h-5\" />\n          </button>\n        </div>\n\n        {/* Research Items */}\n        <div className=\"space-y-4 max-h-96 overflow-y-auto\">\n          {research.map((item) => (\n            <div\n              key={item.id}\n              className={`p-4 rounded-xl border-2 ${\n                item.completed \n                  ? \"bg-green-50 border-green-200\" \n                  : \"bg-white border-amber-200 shadow-sm\"\n              }`}\n            >\n              <div className=\"flex items-start space-x-3\">\n                <div className=\"text-2xl\">{item.icon}</div>\n                <div className=\"flex-1\">\n                  <h3 className=\"font-bold text-gray-800\">{item.name}</h3>\n                  <p className=\"text-gray-600 text-sm mt-1\">{item.description}</p>\n                  <div className=\"flex items-center justify-between mt-3\">\n                    <span className=\"text-amber-600 font-bold\">{item.cost} 🍯</span>\n                    <Button\n                      className={`${\n                        item.completed\n                          ? \"bg-green-500 hover:bg-green-600\"\n                          : \"bg-amber-500 hover:bg-amber-600\"\n                      } text-white px-4 py-2 rounded-lg`}\n                      disabled={item.completed}\n                    >\n                      {item.completed ? \"Complete\" : \"Research\"}\n                    </Button>\n                  </div>\n                </div>\n              </div>\n            </div>\n          ))}\n        </div>\n      </div>\n    </div>\n  );\n}"
+        }
+    ]
+}
