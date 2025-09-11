@@ -4,14 +4,15 @@ import { ActionButtons } from "./components/ActionButtons";
 import { NotificationPanel } from "./components/NotificationPanel";
 import { UpgradeModal } from "./components/UpgradeModal";
 import { ResearchModal } from "./components/ResearchModal";
-import { StatsModal } from "./components/StatsModal";
 import { SettingsModal } from "./components/SettingsModal";
 import { HoneyTypesModal } from "./components/HoneyTypesModal";
 import { ShopModal } from "./components/ShopModal";
+import { GameScene } from "./components/GameScene";
 
 export default function App() {
   const [layoutMode, setLayoutMode] = useState<"compact" | "expanded">("compact");
   const [activeModal, setActiveModal] = useState<string | null>(null);
+  const [modalInitialTab, setModalInitialTab] = useState<string>("");
   const [currentCoins] = useState(1247);
   
   const [notifications, setNotifications] = useState([
@@ -62,16 +63,18 @@ export default function App() {
   const handleActionClick = (action: string) => {
     console.log("Action clicked:", action);
     
-    // Map actions to modals
-    const modalMap: { [key: string]: string } = {
-      "star": "research",
-      "timer": "upgrade",
-      "network": "settings",
-      "grid": "upgrade"
+    // Map actions to consolidated modals with specific tabs
+    const modalConfig: { [key: string]: { modal: string, tab: string } } = {
+      "boosts": { modal: "research", tab: "research" },      // Star -> Research Lab
+      "shop": { modal: "shop", tab: "shop" },              // Cart -> Shop
+      "tier-upgrade": { modal: "upgrade", tab: "buildings" }, // Trending -> Building Upgrades
+      "settings": { modal: "settings", tab: "settings" }    // Settings -> Settings
     };
 
-    if (modalMap[action]) {
-      setActiveModal(modalMap[action]);
+    if (modalConfig[action]) {
+      console.log("App: Setting modalInitialTab to:", modalConfig[action].tab); // Debug log
+      setModalInitialTab(modalConfig[action].tab);
+      setActiveModal(modalConfig[action].modal);
     } else if (action === "create-bees") {
       // Handle bee creation logic
       console.log("Creating bees!");
@@ -79,12 +82,14 @@ export default function App() {
     }
   };
 
+
   const handleLayoutToggle = () => {
     setLayoutMode(layoutMode === "compact" ? "expanded" : "compact");
   };
 
   const closeModal = () => {
     setActiveModal(null);
+    setModalInitialTab("");
   };
 
   const handleDismissLeftNotification = (id: string) => {
@@ -96,10 +101,12 @@ export default function App() {
   };
 
   const handleLeftHexagonClick = () => {
+    setModalInitialTab("");
     setActiveModal("honey-types");
   };
 
   const handleRightHexagonClick = () => {
+    setModalInitialTab("shop");
     setActiveModal("shop");
   };
 
@@ -114,22 +121,25 @@ export default function App() {
     // Add purchase logic here
   };
 
+  const handleUseBoost = (boostId: string, amount: number) => {
+    console.log("Using boost:", boostId, "amount:", amount);
+    // Add boost logic here
+  };
+
+  const handleUpgradeHive = (slotId: number) => {
+    console.log("Upgrading hive slot:", slotId);
+    // Add hive upgrade logic here
+  };
+
+  const handleReplaceHive = (slotId: number) => {
+    console.log("Replacing hive slot:", slotId);
+    // Add hive replacement logic here
+  };
+
   return (
     <div className="relative w-full h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 overflow-hidden">
-      {/* Background placeholder with smaller text */}
-      <div className="absolute inset-0 flex items-center justify-center">
-        <div className="text-amber-200/15 text-6xl font-bold rotate-12 select-none tracking-wider">
-          HONEY, INC.
-        </div>
-      </div>
-
-      {/* Subtle background pattern */}
-      <div className="absolute inset-0 opacity-5">
-        <div className="w-full h-full" style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23fbbf24' fill-opacity='0.1'%3E%3Cpolygon points='30,5 55,25 55,55 30,75 5,55 5,25'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-          backgroundSize: '60px 60px'
-        }} />
-      </div>
+      {/* 3D Game Scene */}
+      <GameScene />
 
       {/* Game UI */}
       <GameHeader
@@ -160,30 +170,30 @@ export default function App() {
         onLayoutToggle={handleLayoutToggle}
       />
 
-      {/* Modals */}
+      {/* Consolidated Modals */}
       <UpgradeModal
         isOpen={activeModal === "upgrade"}
         onClose={closeModal}
-        title="HIVE TOWER"
+        title="HIVE MANAGEMENT"
         capacity={1234}
         utilization={85}
         upgrades={mockUpgrades}
         onUpgrade={(id) => console.log("Upgrade:", id)}
+        onUpgradeHive={handleUpgradeHive}
+        onReplaceHive={handleReplaceHive}
+        initialTab={modalInitialTab}
       />
 
       <ResearchModal
         isOpen={activeModal === "research"}
         onClose={closeModal}
-      />
-
-      <StatsModal
-        isOpen={activeModal === "stats"}
-        onClose={closeModal}
+        initialTab={modalInitialTab}
       />
 
       <SettingsModal
         isOpen={activeModal === "settings"}
         onClose={closeModal}
+        initialTab={modalInitialTab}
       />
 
       <HoneyTypesModal
@@ -197,6 +207,8 @@ export default function App() {
         onClose={closeModal}
         currentCoins={currentCoins}
         onPurchase={handlePurchase}
+        onUseBoost={handleUseBoost}
+        initialTab={modalInitialTab}
       />
     </div>
   );

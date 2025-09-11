@@ -1,4 +1,4 @@
-import { Zap as Coins, Hexagon } from "lucide-react";
+import { Coins, Hexagon } from "lucide-react";
 
 interface GameHeaderProps {
   honeyCount: number;

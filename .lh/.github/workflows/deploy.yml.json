@@ -1,0 +1,18 @@
+{
+    "sourceFile": ".github/workflows/deploy.yml",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1757497112242,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1757497112242,
+            "name": "Commit-0",
+            "content": "name: Deploy to GitHub Pages\n\non:\n  push:\n    branches: [ main ]\n  pull_request:\n    branches: [ main ]\n\njobs:\n  build-and-deploy:\n    runs-on: ubuntu-latest\n    \n    steps:\n    - name: Checkout\n      uses: actions/checkout@v4\n      \n    - name: Setup Node.js\n      uses: actions/setup-node@v4\n      with:\n        node-version: '18'\n        cache: 'npm'\n        \n    - name: Install dependencies\n      run: npm ci\n      \n    - name: Build\n      run: npm run build\n      \n    - name: Deploy to GitHub Pages\n      if: github.ref == 'refs/heads/main'\n      uses: peaceiris/actions-gh-pages@v3\n      with:\n        github_token: ${{ secrets.GITHUB_TOKEN }}\n        publish_dir: ./dist\n"
+        }
+    ]
+}
