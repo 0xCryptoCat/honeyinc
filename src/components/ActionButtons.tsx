@@ -25,35 +25,30 @@ export function ActionButtons({ layoutMode, onButtonClick, onLayoutToggle }: Act
               key={index}
               icon={button.icon}
               onClick={() => onButtonClick?.(button.action)}
-              size="large"
+              size="small"
             />
           ))}
           
           {/* Middle button - Spawn Bee with layout toggle above */}
           <div className="relative">
             {/* Small tap mode button above - now rounded rectangle */}
-            <div className="absolute -top-12 left-1/2 transform -translate-x-1/2">
+            <div className="absolute -top-2 -right-5 transform -translate-x-1/2">
               <div className="relative">
-                {/* Shadow layer */}
-                <div className="absolute inset-0 transform translate-y-1 bg-amber-900/30 rounded-lg -z-10" />
-                
                 <button
                   onClick={onLayoutToggle}
-                  className="relative bg-gradient-to-b from-amber-400 via-amber-500 to-amber-600 text-white px-4 py-2 rounded-lg shadow-lg hover:scale-105 active:scale-95 transition-all duration-200 border border-amber-300"
+                  className="relative bg-gradient-to-b from-amber-400 via-amber-500 to-amber-600 text-white px-3 py-1 rounded-lg shadow-lg hover:scale-105 active:scale-95 transition-all duration-200 border border-amber-300"
                 >
                   {/* Inner highlight */}
                   <div className="absolute inset-0 bg-gradient-to-b from-white/20 via-white/5 to-transparent rounded-lg" />
                   
-                  <span className="text-xs font-bold drop-shadow-sm relative">TAP</span>
-                  
                   {/* Shine effect */}
-                  <div className="absolute top-0.5 left-1 w-2 h-2 bg-white/40 rounded-full blur-sm" />
+                  <div className="absolute top-0.5 left-1 w-2 h-1 bg-white/40 rounded-full blur-sm" />
                 </button>
               </div>
             </div>
             
             {/* Main spawn bee button */}
-            <div className="relative">
+            <div className="relative top-5">
               {/* Shadow layers */}
               <div className="absolute inset-0 transform translate-x-1 translate-y-2 -z-10"
                 style={{
@@ -104,7 +99,7 @@ export function ActionButtons({ layoutMode, onButtonClick, onLayoutToggle }: Act
               key={index + 2}
               icon={button.icon}
               onClick={() => onButtonClick?.(button.action)}
-              size="large"
+              size="small"
             />
           ))}
         </div>
@@ -127,19 +122,16 @@ export function ActionButtons({ layoutMode, onButtonClick, onLayoutToggle }: Act
           ))}
         </div>
         
-        <div className="relative">
+        <div className="relative top-5">
           {/* Shadow layer */}
           <div className="absolute inset-0 transform translate-x-0.5 translate-y-1 bg-gray-900/20 rounded-full -z-10" />
           
           <button
             onClick={onLayoutToggle}
-            className="relative w-10 h-10 bg-gradient-to-b from-white to-amber-50 rounded-full shadow-xl border-2 border-amber-300 flex items-center justify-center hover:scale-110 active:scale-95 transition-all duration-200"
+            className="relative w-5 h-5 bg-gradient-to-b from-amber-400 via-amber-500 to-amber-600 rounded-full shadow-xl border-2 border-amber-300 flex items-center justify-center hover:scale-110 active:scale-95 transition-all duration-200"
           >
-            {/* Inner highlight */}
-            <div className="absolute inset-0 bg-gradient-to-b from-white/40 via-white/10 to-transparent rounded-full" />
-            
             {/* Just a circle - no arrow */}
-            <div className="w-3 h-3 bg-amber-600 rounded-full" />
+            <div className="w-3 h-3 bg-gradient-to-b from-white/20 via-white/5 to-transparent rounded-full" />
             
             {/* Shine effect */}
             <div className="absolute top-1 left-1.5 w-2 h-2 bg-white/50 rounded-full blur-sm" />
@@ -156,15 +148,13 @@ export function ActionButtons({ layoutMode, onButtonClick, onLayoutToggle }: Act
           
           <button
             onClick={() => onButtonClick?.("create-bees")}
-            className="relative bg-gradient-to-b from-amber-400 via-amber-500 to-amber-600 text-white py-3 px-16 rounded-2xl shadow-2xl border-4 border-amber-300 hover:scale-105 active:scale-95 transition-all duration-200"
+            className="relative bg-gradient-to-b from-amber-400 via-amber-500 to-amber-600 text-white py-3 px-20 rounded-2xl shadow-2xl border-4 border-amber-300 hover:scale-105 active:scale-95 transition-all duration-200"
           >
             {/* Inner highlight for 3D effect */}
             <div className="absolute inset-0 bg-gradient-to-b from-white/30 via-white/10 to-transparent rounded-2xl" />
             
             <div className="relative flex items-center justify-center space-x-3">
               <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-inner relative">
-                {/* Bee container highlight */}
-                <div className="absolute inset-0 bg-gradient-to-b from-white/40 to-transparent rounded-full" />
                 <span className="text-amber-600 text-lg relative">🐝</span>
               </div>
               <span className="text-lg font-bold drop-shadow-lg">SPAWN BEES</span>
