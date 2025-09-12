@@ -11,6 +11,20 @@ function Ground() {
   );
 }
 
+function GridSystem() {
+  const gridRef = useRef<THREE.GridHelper>(null);
+  
+  return (
+    <gridHelper 
+      ref={gridRef}
+      args={[40, 20, '#ffffff', '#ffffff']} 
+      position={[0, -0.49, 0]}
+      material-opacity={0.2}
+      material-transparent={true}
+    />
+  );
+}
+
 function Building({ position, size, color }: { position: [number, number, number], size: [number, number, number], color: string }) {
   const meshRef = useRef<any>(null);
   
@@ -44,12 +58,12 @@ function DynamicLighting() {
   const moonRef = useRef<THREE.DirectionalLight>(null);
 
   useFrame((state) => {
-    const time = state.clock.getElapsedTime() * 0.2; // Slow down the cycle
+    const time = state.clock.getElapsedTime() * 0.01; // Much slower cycle - reduced from 0.05
     
     // Sun position - circular path around the scene
-    const sunX = Math.cos(time) * 25;
-    const sunY = Math.sin(time) * 15 + 5;
-    const sunZ = Math.sin(time) * 25;
+    const sunX = Math.cos(time) * 30;
+    const sunY = Math.sin(time) * 20 + 8;
+    const sunZ = Math.sin(time) * 30;
     
     // Moon position - opposite to sun
     const moonX = -sunX;
@@ -62,17 +76,17 @@ function DynamicLighting() {
       sunRef.current.target.updateMatrixWorld();
       
       // Sun intensity based on height (day/night cycle)
-      const sunIntensity = Math.max(0, sunY / 15);
-      sunRef.current.intensity = sunIntensity * 1.2;
+      const sunIntensity = Math.max(0, sunY / 20);
+      sunRef.current.intensity = sunIntensity * 1.0;
       
       // Sun color changes throughout day
       const sunColor = new THREE.Color();
-      if (sunY > 10) {
+      if (sunY > 15) {
         // Noon - bright white
-        sunColor.setRGB(1, 1, 0.9);
+        sunColor.setRGB(1, 1, 0.95);
       } else if (sunY > 0) {
-        // Dawn/Dusk - orange
-        sunColor.setRGB(1, 0.6, 0.3);
+        // Dawn/Dusk - warm orange
+        sunColor.setRGB(1, 0.7, 0.4);
       } else {
         // Below horizon - no light
         sunColor.setRGB(0, 0, 0);
@@ -81,23 +95,23 @@ function DynamicLighting() {
     }
     
     if (moonRef.current) {
-      moonRef.current.position.set(moonX, Math.max(moonY, 2), moonZ);
+      moonRef.current.position.set(moonX, Math.max(moonY, 3), moonZ);
       moonRef.current.target.position.set(0, 0, 0);
       moonRef.current.target.updateMatrixWorld();
       
       // Moon intensity when sun is down
-      const moonIntensity = sunY < 0 ? Math.max(0, -sunY / 15) : 0;
-      moonRef.current.intensity = moonIntensity * 0.3;
+      const moonIntensity = sunY < 0 ? Math.max(0, -sunY / 20) : 0;
+      moonRef.current.intensity = moonIntensity * 0.25;
       
-      // Moon color - blue-ish white
-      moonRef.current.color.setRGB(0.8, 0.9, 1);
+      // Moon color - cool blue-white
+      moonRef.current.color.setRGB(0.7, 0.8, 1);
     }
   });
 
   return (
     <>
       {/* Ambient light changes with time of day */}
-      <ambientLight intensity={0.2} color="#87CEEB" />
+      <ambientLight intensity={0.3} color="#e6f3ff" />
       
       {/* Sun */}
       <directionalLight
@@ -136,27 +150,39 @@ function Scene() {
 
       {/* Ground - larger field */}
       <Ground />
+      
+      {/* Grid System for building placement */}
+      <GridSystem />
 
-      {/* Buildings/Structures - sitting properly on ground */}
-      <Building position={[-8, 0.5, -6]} size={[1.5, 1, 2]} color="#8b5cf6" />
-      <Building position={[6, 0.75, -8]} size={[2, 1.5, 1.5]} color="#ef4444" />
-      <Building position={[-4, 0.25, 4]} size={[1, 0.5, 1]} color="#06b6d4" />
-      <Building position={[8, 1, 4]} size={[1.8, 2, 1.2]} color="#f97316" />
-      <Building position={[-10, 0.4, 0]} size={[1.2, 0.8, 1]} color="#a855f7" />
-      <Building position={[0, 0.15, -10]} size={[0.8, 0.3, 0.8]} color="#22c55e" />
-      <Building position={[10, 0.3, -2]} size={[1, 0.6, 1.5]} color="#ec4899" />
+      {/* Buildings organized in a grid pattern (2-unit spacing) */}
+      <Building position={[-8, 0.5, -8]} size={[1.5, 1, 2]} color="#8b5cf6" />
+      <Building position={[-4, 0.75, -8]} size={[2, 1.5, 1.5]} color="#ef4444" />
+      <Building position={[0, 0.25, -8]} size={[1, 0.5, 1]} color="#06b6d4" />
+      <Building position={[4, 1, -8]} size={[1.8, 2, 1.2]} color="#f97316" />
+      <Building position={[8, 0.4, -8]} size={[1.2, 0.8, 1]} color="#a855f7" />
 
-      {/* Hives - sitting properly on ground */}
-      <Hive position={[-2, 0, -2]} />
-      <Hive position={[3, 0, 2]} />
-      <Hive position={[-6, 0, 2]} />
-      <Hive position={[4, 0, -4]} />
-      <Hive position={[0, 0, 6]} />
-      <Hive position={[-8, 0, -4]} />
+      <Building position={[-8, 0.3, -4]} size={[1, 0.6, 1.5]} color="#22c55e" />
+      <Building position={[-4, 0.15, -4]} size={[0.8, 0.3, 0.8]} color="#ec4899" />
+      <Building position={[4, 0.2, -4]} size={[0.6, 0.4, 0.6]} color="#fbbf24" />
+      <Building position={[8, 0.3, -4]} size={[0.8, 0.6, 0.8]} color="#f97316" />
 
-      {/* Additional decorative elements */}
-      <Building position={[12, 0.2, 6]} size={[0.6, 0.4, 0.6]} color="#fbbf24" />
-      <Building position={[-12, 0.3, -8]} size={[0.8, 0.6, 0.8]} color="#f97316" />
+      {/* Hives organized in grid pattern */}
+      <Hive position={[-6, 0, -6]} />
+      <Hive position={[-2, 0, -6]} />
+      <Hive position={[2, 0, -6]} />
+      <Hive position={[6, 0, -6]} />
+      
+      <Hive position={[-6, 0, -2]} />
+      <Hive position={[2, 0, -2]} />
+      <Hive position={[6, 0, -2]} />
+      
+      <Hive position={[-4, 0, 2]} />
+      <Hive position={[0, 0, 2]} />
+      <Hive position={[4, 0, 2]} />
+
+      {/* Decorative elements on grid */}
+      <Building position={[-8, 0.2, 4]} size={[0.6, 0.4, 0.6]} color="#fbbf24" />
+      <Building position={[8, 0.3, 4]} size={[0.8, 0.6, 0.8]} color="#f97316" />
     </>
   );
 }
@@ -177,9 +203,9 @@ export function GameScene() {
     const deltaX = event.clientX - previousMouse.current.x;
     const deltaY = event.clientY - previousMouse.current.y;
 
-    // Pan the camera (limit the range)
-    const panSpeed = 0.02;
-    const maxPan = 8;
+    // Pan the camera with smooth movement and better limits
+    const panSpeed = 0.03;
+    const maxPan = 12; // Increased pan range
 
     cameraPosition.current.x = Math.max(-maxPan, Math.min(maxPan, 
       cameraPosition.current.x - deltaX * panSpeed));
@@ -204,16 +230,18 @@ export function GameScene() {
       <Canvas
         shadows
         camera={{ 
-          position: [12, 8, 12], 
+          position: [15, 12, 15], 
           fov: 45,
           near: 0.1,
           far: 100
         }}
-        style={{ background: 'transparent' }}
+        style={{ background: 'linear-gradient(to bottom, #87CEEB 0%, #98FB98 100%)' }}
         onCreated={({ camera }) => {
+          // Fixed camera that only moves position, not rotation
           const updateCamera = () => {
-            camera.position.x = 12 + cameraPosition.current.x;
-            camera.position.z = 12 + cameraPosition.current.z;
+            camera.position.x = 15 + cameraPosition.current.x;
+            camera.position.z = 15 + cameraPosition.current.z;
+            // Always look at the offset center of the scene
             camera.lookAt(cameraPosition.current.x, 0, cameraPosition.current.z);
           };
           

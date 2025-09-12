@@ -38,6 +38,7 @@ export function ResearchModal({ isOpen, onClose, currentCash = 1500000, initialT
   useEffect(() => {
     if (isOpen) {
       setActiveMainTab(initialTab || "research");
+      setActiveResearchTab("all"); // Reset sub-tab as well
       console.log("ResearchModal: Setting initial tab to:", initialTab); // Debug log
     }
   }, [isOpen, initialTab]);
@@ -59,7 +60,7 @@ export function ResearchModal({ isOpen, onClose, currentCash = 1500000, initialT
   const researchItems: ResearchItem[] = [
     {
       id: "1",
-      title: "Nutritional Supplements",
+      title: "Royal Jelly Supplements",
       icon: "🍯",
       level: 5,
       maxLevel: 25,
@@ -69,7 +70,7 @@ export function ResearchModal({ isOpen, onClose, currentCash = 1500000, initialT
     },
     {
       id: "2", 
-      title: "Padded Packaging",
+      title: "Honeycomb Packaging",
       icon: "📦",
       level: 8,
       maxLevel: 30,
@@ -79,7 +80,7 @@ export function ResearchModal({ isOpen, onClose, currentCash = 1500000, initialT
     },
     {
       id: "3",
-      title: "Hive Ventilation",
+      title: "Hive Climate Control",
       icon: "🏠",
       level: 12,
       maxLevel: 50,
@@ -89,7 +90,7 @@ export function ResearchModal({ isOpen, onClose, currentCash = 1500000, initialT
     },
     {
       id: "4",
-      title: "Improved Trucks",
+      title: "Express Delivery Trucks",
       icon: "🚚",
       level: 3,
       maxLevel: 15,
@@ -99,11 +100,31 @@ export function ResearchModal({ isOpen, onClose, currentCash = 1500000, initialT
     },
     {
       id: "5",
-      title: "Hive AC",
+      title: "Hive Air Conditioning",
       icon: "❄️",
       level: 6,
       maxLevel: 20,
       effect: "Reduce bee fatigue by 8%",
+      cost: 180000,
+      category: "habitats"
+    },
+    {
+      id: "6",
+      title: "Premium Flower Seeds",
+      icon: "🌸",
+      level: 9,
+      maxLevel: 35,
+      effect: "Increase nectar quality by 12%",
+      cost: 320000,
+      category: "hatchery"
+    },
+    {
+      id: "7",
+      title: "Automated Honey Extractors",
+      icon: "⚙️",
+      level: 4,
+      maxLevel: 25,
+      effect: "Increase extraction efficiency by 20%",
       cost: 180000,
       category: "misc"
     }
@@ -112,21 +133,21 @@ export function ResearchModal({ isOpen, onClose, currentCash = 1500000, initialT
   const epicResearchItems: EpicResearchItem[] = [
     {
       id: "e1",
-      title: "Soul Honey",
+      title: "Golden Nectar",
       icon: "✨",
       level: 12,
       maxLevel: 25,
-      effect: "Increase soul honey bonus by 20%",
+      effect: "Increase golden honey bonus by 20%",
       cost: 25,
       currency: "golden_combs"
     },
     {
       id: "e2",
-      title: "Golden Multiplier", 
+      title: "Royal Honey Multiplier", 
       icon: "💰",
       level: 8,
       maxLevel: 20,
-      effect: "Increase golden honey value by 15%",
+      effect: "Increase royal honey value by 15%",
       cost: 50,
       currency: "golden_combs"
     },
@@ -138,6 +159,16 @@ export function ResearchModal({ isOpen, onClose, currentCash = 1500000, initialT
       maxLevel: 15,
       effect: "Reduce prestige requirements by 10%",
       cost: 100,
+      currency: "golden_combs"
+    },
+    {
+      id: "e4",
+      title: "Queen Bee Powers",
+      icon: "👑",
+      level: 3,
+      maxLevel: 10,
+      effect: "Increase bee productivity by 25%",
+      cost: 150,
       currency: "golden_combs"
     }
   ];
@@ -300,7 +331,7 @@ export function ResearchModal({ isOpen, onClose, currentCash = 1500000, initialT
             {/* Footer */}
             <div className="text-center">
               <div className="text-amber-700 text-xs">
-                💡 Research resets on honey tier upgrade/prestige
+                💡 Research resets on honey tier prestige
               </div>
             </div>
           </>

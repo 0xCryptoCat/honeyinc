@@ -49,23 +49,23 @@ export function ShopModal({ isOpen, onClose, currentCoins = 1247, onPurchase, on
   const packages: ShopPackage[] = [
     {
       id: "starter",
-      name: "Starter Pack",
+      name: "Beginner Beekeeper Pack",
       price: "$2.99",
-      contents: ["1,000 Golden Combs", "5x Honey Rush", "2x Speed Delivery"],
+      contents: ["5,000 Hexcoins", "10x Honey Rush", "5x Speed Delivery"],
       value: "Best Value!"
     },
     {
       id: "pro",
-      name: "Pro Bundle", 
+      name: "Professional Beekeeper", 
       price: "$9.99",
-      contents: ["5,000 Golden Combs", "20x Mixed Boosts", "Premium Hive Slot"],
+      contents: ["25,000 Hexcoins", "50x Mixed Boosts", "Premium Hive Upgrade"],
       popular: true
     },
     {
       id: "mega",
-      name: "Mega Pack",
+      name: "Master Apiarist Bundle",
       price: "$19.99", 
-      contents: ["15,000 Golden Combs", "50x All Boosts", "Epic Research Bundle"],
+      contents: ["75,000 Hexcoins", "100x All Boosts", "Epic Research Token"],
       value: "Most Popular!"
     }
   ];
@@ -73,7 +73,7 @@ export function ShopModal({ isOpen, onClose, currentCoins = 1247, onPurchase, on
   const boosts: BoostItem[] = [
     {
       id: "production",
-      name: "Honey Rush",
+      name: "Royal Honey Rush",
       icon: "🍯",
       count: 15,
       effect: "+500% honey production",
@@ -82,7 +82,7 @@ export function ShopModal({ isOpen, onClose, currentCoins = 1247, onPurchase, on
     },
     {
       id: "spawning",
-      name: "Bee Frenzy",
+      name: "Bee Colony Frenzy",
       icon: "🐝",
       count: 8,
       effect: "+250% bee spawning rate",
@@ -91,7 +91,7 @@ export function ShopModal({ isOpen, onClose, currentCoins = 1247, onPurchase, on
     },
     {
       id: "shipping",
-      name: "Speed Delivery",
+      name: "Express Honey Delivery",
       icon: "🚚",
       count: 12,
       effect: "+300% shipping speed",
@@ -100,7 +100,7 @@ export function ShopModal({ isOpen, onClose, currentCoins = 1247, onPurchase, on
     },
     {
       id: "earnings",
-      name: "Golden Touch",
+      name: "Golden Nectar Boost",
       icon: "💰",
       count: 6,
       effect: "+400% honey value",
@@ -109,10 +109,10 @@ export function ShopModal({ isOpen, onClose, currentCoins = 1247, onPurchase, on
     },
     {
       id: "soul",
-      name: "Soul Boost",
+      name: "Queen's Blessing",
       icon: "✨",
       count: 3,
-      effect: "+200% soul honey gain",
+      effect: "+200% royal honey gain",
       duration: "20 minutes",
       color: "from-purple-400 to-purple-600"
     }
@@ -352,7 +352,7 @@ export function ShopModal({ isOpen, onClose, currentCoins = 1247, onPurchase, on
                   <div className="text-green-900 font-bold text-sm mb-2">Active Boosts</div>
                   <div className="space-y-1">
                     <div className="flex justify-between text-xs">
-                      <span className="text-green-800">🍯 Honey Rush</span>
+                      <span className="text-green-800">🍯 Royal Honey Rush</span>
                       <span className="text-green-700">2:45 remaining</span>
                     </div>
                     <div className="bg-green-400 h-1 rounded-full">
