@@ -193,12 +193,14 @@ export function GameScene() {
   const cameraPosition = useRef({ x: 0, z: 0 });
 
   const handleMouseDown = (event: React.MouseEvent) => {
+    event.preventDefault();
     isDragging.current = true;
     previousMouse.current = { x: event.clientX, y: event.clientY };
   };
 
   const handleMouseMove = (event: React.MouseEvent) => {
     if (!isDragging.current) return;
+    event.preventDefault();
 
     const deltaX = event.clientX - previousMouse.current.x;
     const deltaY = event.clientY - previousMouse.current.y;
@@ -215,17 +217,56 @@ export function GameScene() {
     previousMouse.current = { x: event.clientX, y: event.clientY };
   };
 
-  const handleMouseUp = () => {
+  const handleMouseUp = (event: React.MouseEvent) => {
+    event.preventDefault();
+    isDragging.current = false;
+  };
+
+  // Touch events for mobile support
+  const handleTouchStart = (event: React.TouchEvent) => {
+    if (event.touches.length === 1) {
+      event.preventDefault();
+      isDragging.current = true;
+      const touch = event.touches[0];
+      previousMouse.current = { x: touch.clientX, y: touch.clientY };
+    }
+  };
+
+  const handleTouchMove = (event: React.TouchEvent) => {
+    if (!isDragging.current || event.touches.length !== 1) return;
+    event.preventDefault();
+
+    const touch = event.touches[0];
+    const deltaX = touch.clientX - previousMouse.current.x;
+    const deltaY = touch.clientY - previousMouse.current.y;
+
+    const panSpeed = 0.03;
+    const maxPan = 12;
+
+    cameraPosition.current.x = Math.max(-maxPan, Math.min(maxPan, 
+      cameraPosition.current.x - deltaX * panSpeed));
+    cameraPosition.current.z = Math.max(-maxPan, Math.min(maxPan, 
+      cameraPosition.current.z - deltaY * panSpeed));
+
+    previousMouse.current = { x: touch.clientX, y: touch.clientY };
+  };
+
+  const handleTouchEnd = (event: React.TouchEvent) => {
+    event.preventDefault();
     isDragging.current = false;
   };
 
   return (
     <div 
-      className="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing"
+      className="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing select-none"
       onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
       onMouseLeave={handleMouseUp}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+      style={{ touchAction: 'none' }}
     >
       <Canvas
         shadows

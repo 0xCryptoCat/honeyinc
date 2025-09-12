@@ -65,10 +65,11 @@ export default function App() {
     
     // Map actions to consolidated modals with specific tabs
     const modalConfig: { [key: string]: { modal: string, tab: string } } = {
-      "boosts": { modal: "research", tab: "research" },      // Star -> Research Lab
-      "shop": { modal: "shop", tab: "shop" },              // Cart -> Shop
-      "tier-upgrade": { modal: "upgrade", tab: "buildings" }, // Trending -> Building Upgrades
-      "settings": { modal: "settings", tab: "settings" }    // Settings -> Settings
+      "boosts": { modal: "research", tab: "epic" },           // Star -> Epic Research
+      "tier-upgrade": { modal: "research", tab: "research" }, // Trending -> Regular Research
+      "upgrade": { modal: "upgrade", tab: "buildings" },     // Building -> Building Upgrades
+      "shop": { modal: "shop", tab: "shop" },                // Cart -> Shop
+      "settings": { modal: "settings", tab: "settings" }     // Settings -> Settings
     };
 
     if (modalConfig[action]) {

@@ -1,4 +1,4 @@
-import { Star, ShoppingCart, TrendingUp, Settings } from "lucide-react";
+import { Star, ShoppingCart, TrendingUp, Settings, Building } from "lucide-react";
 import { HoneycombButton } from "./HoneycombButton";
 
 interface ActionButtonsProps {
@@ -9,9 +9,10 @@ interface ActionButtonsProps {
 
 export function ActionButtons({ layoutMode, onButtonClick, onLayoutToggle }: ActionButtonsProps) {
   const buttons = [
-    { icon: Star, action: "boosts", label: "Boosts" },
+    { icon: Star, action: "boosts", label: "Epic Research" },
+    { icon: TrendingUp, action: "tier-upgrade", label: "Research" },
+    { icon: Building, action: "upgrade", label: "Upgrades" },
     { icon: ShoppingCart, action: "shop", label: "Shop" },
-    { icon: TrendingUp, action: "tier-upgrade", label: "Tier Upgrade" },
     { icon: Settings, action: "settings", label: "Settings" },
   ];
 

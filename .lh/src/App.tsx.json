@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 4,
+            "activePatchIndex": 5,
             "patches": [
                 {
                     "date": 1757495803704,
@@ -24,6 +24,10 @@
                 {
                     "date": 1757623602324,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -120,8 +120,13 @@\n     console.log(\"Purchasing package:\", packageId);\n     // Add purchase logic here\n   };\n \n+  const handleUseBoost = (boostId: string, amount: number) => {\n+    console.log(\"Using boost:\", boostId, \"amount:\", amount);\n+    // Add boost logic here\n+  };\n+\n   const handleUpgradeHive = (slotId: number) => {\n     console.log(\"Upgrading hive slot:\", slotId);\n     // Add hive upgrade logic here\n   };\n"
+                },
+                {
+                    "date": 1757697678872,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -64,12 +64,13 @@\n     console.log(\"Action clicked:\", action);\n     \n     // Map actions to consolidated modals with specific tabs\n     const modalConfig: { [key: string]: { modal: string, tab: string } } = {\n-      \"boosts\": { modal: \"research\", tab: \"research\" },      // Star -> Research Lab\n-      \"shop\": { modal: \"shop\", tab: \"shop\" },              // Cart -> Shop\n-      \"tier-upgrade\": { modal: \"upgrade\", tab: \"buildings\" }, // Trending -> Building Upgrades\n-      \"settings\": { modal: \"settings\", tab: \"settings\" }    // Settings -> Settings\n+      \"boosts\": { modal: \"research\", tab: \"epic\" },           // Star -> Epic Research\n+      \"tier-upgrade\": { modal: \"research\", tab: \"research\" }, // Trending -> Regular Research\n+      \"upgrade\": { modal: \"upgrade\", tab: \"buildings\" },     // Building -> Building Upgrades\n+      \"shop\": { modal: \"shop\", tab: \"shop\" },                // Cart -> Shop\n+      \"settings\": { modal: \"settings\", tab: \"settings\" }     // Settings -> Settings\n     };\n \n     if (modalConfig[action]) {\n       console.log(\"App: Setting modalInitialTab to:\", modalConfig[action].tab); // Debug log\n"
                 }
             ],
             "date": 1757495803704,
