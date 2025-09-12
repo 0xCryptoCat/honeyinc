@@ -28,19 +28,20 @@ export function SettingsModal({ isOpen, onClose, initialTab = "settings" }: Sett
 
   const statsData = [
     { label: "Total Honey Produced", value: "2.4M jars", icon: "🍯" },
-    { label: "Total Bees Spawned", value: "48,392", icon: "🐝" },
-    { label: "Days Playing", value: "15 days", icon: "📅" },
-    { label: "Lifetime Earnings", value: "$12.8M", icon: "💰" },
-    { label: "Prestige Count", value: "3 times", icon: "⭐" },
-    { label: "Hives Built", value: "24 hives", icon: "🏠" }
+    { label: "Active Bee Colonies", value: "48,392", icon: "🐝" },
+    { label: "Days Beekeeping", value: "15 days", icon: "📅" },
+    { label: "Lifetime Honey Sales", value: "$12.8M", icon: "💰" },
+    { label: "Honey Tier Prestiges", value: "3 times", icon: "⭐" },
+    { label: "Active Hives", value: "24 hives", icon: "🏠" }
   ];
 
   const achievements = [
-    { name: "First Drop", description: "Produce your first honey", unlocked: true },
-    { name: "Bee Keeper", description: "Spawn 1,000 bees", unlocked: true },
-    { name: "Sweet Success", description: "Earn $1M", unlocked: true },
-    { name: "Hive Mind", description: "Build 10 hives", unlocked: false },
-    { name: "Golden Touch", description: "Reach tier 10 honey", unlocked: false }
+    { name: "First Harvest", description: "Produce your first jar of honey", unlocked: true },
+    { name: "Bee Whisperer", description: "Have 100 bees working", unlocked: true },
+    { name: "Sweet Success", description: "Earn $1M in honey sales", unlocked: true },
+    { name: "Hive Mind", description: "Build 10 active hives", unlocked: false },
+    { name: "Golden Touch", description: "Reach royal honey tier", unlocked: false },
+    { name: "Master Beekeeper", description: "Complete all research", unlocked: false }
   ];
 
   if (!isOpen) return null;
@@ -206,8 +207,8 @@ export function SettingsModal({ isOpen, onClose, initialTab = "settings" }: Sett
                 <div className="absolute inset-0 transform translate-y-0.5 bg-amber-900/20 rounded-2xl -z-10" />
                 <div className="relative text-center">
                   <div className="text-amber-900 font-bold text-lg">Honey, Inc.</div>
-                  <div className="text-amber-700 text-sm">Version 1.2.3</div>
-                  <div className="text-amber-600 text-xs mt-1">© 2024 Bee Studios</div>
+                  <div className="text-amber-700 text-sm">Version 1.0.0</div>
+                  <div className="text-amber-600 text-xs mt-1">© 2024 Buzzing Studios</div>
                 </div>
                 <div className="absolute top-0 left-2 w-4 h-4 bg-white/30 rounded-full blur-md" />
               </div>
@@ -284,9 +285,9 @@ export function SettingsModal({ isOpen, onClose, initialTab = "settings" }: Sett
               <div className="relative">
                 <div className="absolute inset-0 transform translate-y-0.5 bg-blue-900/20 rounded-2xl -z-10" />
                 <div className="relative">
-                  <h3 className="text-blue-900 font-bold text-lg mb-2">💡 Pro Tip</h3>
+                  <h3 className="text-blue-900 font-bold text-lg mb-2">💡 Beekeeper's Tip</h3>
                   <div className="text-blue-800 text-sm">
-                    Focus on research upgrades early to maximize your honey production efficiency!
+                    Focus on Royal Jelly research early to maximize your hive's productivity and honey quality!
                   </div>
                 </div>
                 <div className="absolute top-0 left-2 w-4 h-4 bg-white/30 rounded-full blur-md" />
