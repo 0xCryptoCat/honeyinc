@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 12,
+            "activePatchIndex": 14,
             "patches": [
                 {
                     "date": 1757495803704,
@@ -56,6 +56,14 @@
                 {
                     "date": 1757743664909,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,6 +1,40 @@\n @import \"tailwindcss\";\n \n+/* Disable zoom and touch actions for mobile */\n+html, body {\n+  touch-action: pan-x pan-y;\n+  -webkit-user-select: none;\n+  -webkit-touch-callout: none;\n+  -webkit-text-size-adjust: none;\n+  zoom: 1;\n+}\n+\n+/* Prevent zoom on input focus */\n+input, textarea, select {\n+  font-size: 16px !important;\n+}\n+\n+/* Disable double-tap zoom */\n+* {\n+  -webkit-tap-highlight-color: transparent;\n+  -webkit-touch-callout: none;\n+  -webkit-user-select: none;\n+  -khtml-user-select: none;\n+  -moz-user-select: none;\n+  -ms-user-select: none;\n+  user-select: none;\n+}\n+\n+/* Re-enable text selection for content areas */\n+.selectable {\n+  -webkit-user-select: text;\n+  -khtml-user-select: text;\n+  -moz-user-select: text;\n+  -ms-user-select: text;\n+  user-select: text;\n+}\n+\n @custom-variant dark (&:is(.dark *));\n \n :root {\n   --font-size: 16px;\n"
+                },
+                {
+                    "date": 1757775178294,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -152,8 +152,9 @@\n   --color-sidebar-accent: var(--sidebar-accent);\n   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);\n   --color-sidebar-border: var(--sidebar-border);\n   --color-sidebar-ring: var(--sidebar-ring);\n+  \n }\n \n @layer base {\n   * {\n"
+                },
+                {
+                    "date": 1757775192997,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -152,9 +152,9 @@\n   --color-sidebar-accent: var(--sidebar-accent);\n   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);\n   --color-sidebar-border: var(--sidebar-border);\n   --color-sidebar-ring: var(--sidebar-ring);\n-  --8B4513\n+  --road: 8B4513\n }\n \n @layer base {\n   * {\n"
                 }
             ],
             "date": 1757495803704,

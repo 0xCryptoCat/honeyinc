@@ -200,6 +200,9 @@ function Scene() {
       {/* Grid System for building placement with labels */}
       <GridSystem />
 
+      {/* Path System - Roads where vehicles and bees will move */}
+      <PathSystem />
+
       {/* Buildings and objects temporarily disabled for grid mapping */}
       {/* 
       {allCells.map((cell) => {
@@ -399,4 +402,103 @@ export function GameScene() {
       </Canvas>
     </div>
   );
+}
+
+// Path Components
+function PathI({ position, rotation = 0 }: { position: [number, number, number], rotation?: number }) {
+  return (
+    <group position={position} rotation={[0, rotation, 0]}>
+      {/* Straight road segment - half cell width, full cell length */}
+      <mesh position={[0, 0.01, 0]} rotation={[-Math.PI / 2, 0, 0]} castShadow receiveShadow>
+        <planeGeometry args={[1.5, 4]} /> {/* Half width (1.8), full length (3.6) */}
+        <meshLambertMaterial color="#f0ccb1" /> {/* Light brown road color */}
+      </mesh>
+    </group>
+  );
+}
+
+function PathT({ position, rotation = 0 }: { position: [number, number, number], rotation?: number }) {
+  return (
+    <group position={position} rotation={[0, rotation, 0]}>
+      {/* Base cell - entire cell is road colored */}
+      <mesh position={[0, 0.01, 0]} rotation={[-Math.PI / 2, 0, 0]} castShadow receiveShadow>
+        <planeGeometry args={[4, 4]} /> {/* Full cell size */}
+        <meshLambertMaterial color="#f0ccb1" />
+      </mesh>
+      
+      {/* Green cutout objects to shape the T */}
+      {/* Top-left corner cutout - quarter circle */}
+      <mesh position={[-2, 0.011, -2]} rotation={[-Math.PI / 2, 0, 3 * Math.PI / 2]} castShadow receiveShadow>
+        <circleGeometry args={[1.25, 16, 0, Math.PI / 2]} />
+        <meshLambertMaterial color="lightgreen" />
+      </mesh>
+      
+      {/* Top-right corner cutout - quarter circle */}
+      <mesh position={[2, 0.015, -2]} rotation={[-Math.PI / 2, 0, 2 * Math.PI / 2]} castShadow receiveShadow>
+        <circleGeometry args={[1.25, 16, 0, Math.PI / 2]} />
+        <meshLambertMaterial color="lightgreen" />
+      </mesh>
+      
+      {/* Bottom cutout - rectangular area */}
+      <mesh position={[0, 0.011, 1.375]} rotation={[-Math.PI / 2, 0, 0]} castShadow receiveShadow>
+        <planeGeometry args={[4, 1.25]} />
+        <meshLambertMaterial color="lightgreen" />
+      </mesh>
+    </group>
+  );
+}
+
+function PathSystem() {
+  const gridSize = 4; // Same as GridManager
+  const gridExtent = 10; // 10x10 grid
+  
+  // Helper function to convert grid coordinate to world position
+  const getGridPosition = (row: number, col: number): [number, number, number] => {
+    const x = (col - gridExtent/2 + 0.5) * gridSize;
+    const z = (row - gridExtent/2 + 0.5) * gridSize;
+    return [x, 0, z];
+  };
+  
+  // Helper function to convert grid letter to column number (a=0, b=1, etc.)
+  const letterToCol = (letter: string): number => letter.charCodeAt(0) - 97;
+  
+  const paths = [];
+  
+  // Horizontal line: 9a-9j (row 9, columns a through j)
+  for (let col = 0; col < 10; col++) { // a=0 to j=9
+    const position = getGridPosition(8, col); // row 9 is index 8 (0-based)
+    const cellId = `9${String.fromCharCode(97 + col)}`;
+    
+    // T shapes at intersections (9f where vertical line connects)
+    if (col === letterToCol('f')) {
+      paths.push(<PathT key={cellId} position={position} rotation={0} />);
+    } else {
+      paths.push(<PathI key={cellId} position={position} rotation={Math.PI / 2} />); // Horizontal orientation
+    }
+  }
+  
+  // Horizontal line: 6a-6j (row 6, columns a through j)
+  for (let col = 0; col < 10; col++) { // a=0 to j=9
+    const position = getGridPosition(5, col); // row 6 is index 5 (0-based)
+    const cellId = `6${String.fromCharCode(97 + col)}`;
+    
+    // T shapes at intersections (6f where vertical line connects)
+    if (col === letterToCol('f')) {
+      paths.push(<PathT key={cellId} position={position} rotation={Math.PI} />); // Rotated T
+    } else {
+      paths.push(<PathI key={cellId} position={position} rotation={Math.PI / 2} />); // Horizontal orientation
+    }
+  }
+  
+  // Vertical line: 6f-9f (column f, rows 6 through 9)
+  for (let row = 6; row <= 9; row++) {
+    // Skip 6f and 9f since they're already T intersections
+    if (row === 6 || row === 9) continue;
+    
+    const position = getGridPosition(row - 1, letterToCol('f')); // Convert to 0-based
+    const cellId = `${row}f`;
+    paths.push(<PathI key={cellId} position={position} rotation={0} />); // Vertical orientation
+  }
+  
+  return <>{paths}</>;
 }
