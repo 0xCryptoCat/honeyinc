@@ -1,12 +1,17 @@
 import { Canvas, useFrame } from "@react-three/fiber";
 import { useRef } from "react";
 import * as THREE from "three";
+import { Html } from "@react-three/drei";
+// Commented out temporarily for grid mapping phase
+// import { GridManager } from "./GridManager";
+// import { BuildingComponent } from "./Buildings";
+// import { VehicleComponent } from "./Vehicles";
 
 function Ground() {
   return (
-    <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.5, 0]} receiveShadow>
+    <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]} receiveShadow>
       <planeGeometry args={[40, 40]} />
-      <meshLambertMaterial color="#4ade80" />
+      <meshLambertMaterial color="lightgreen" />
     </mesh>
   );
 }
@@ -15,16 +20,59 @@ function GridSystem() {
   const gridRef = useRef<THREE.GridHelper>(null);
   
   return (
-    <gridHelper 
-      ref={gridRef}
-      args={[40, 20, '#ffffff', '#ffffff']} 
-      position={[0, -0.49, 0]}
-      material-opacity={0.2}
-      material-transparent={true}
-    />
+    <>
+      <gridHelper 
+        ref={gridRef}
+        args={[80, 20, '#ffffff', '#ffffff']} 
+        position={[0, 0.01, 0]}
+        material-opacity={0.5}
+        material-transparent={true}
+      />
+      <GridLabels />
+    </>
   );
 }
 
+function GridLabels() {
+  const labels = [];
+  const gridSize = 4; // Same as GridManager
+  const gridExtent = 10; // 10x10 grid (-5 to +5 in each direction)
+  
+  // Create grid cells with 3D HTML text labels
+  for (let row = 0; row < gridExtent; row++) {
+    for (let col = 0; col < gridExtent; col++) {
+      const x = (col - gridExtent/2 + 0.5) * gridSize;
+      const z = (row - gridExtent/2 + 0.5) * gridSize;
+      const rowNumber = row + 1;
+      const colLetter = String.fromCharCode(97 + col); // a, b, c, d...
+      const cellId = `${rowNumber}${colLetter}`;
+      
+      labels.push(
+        <group key={cellId} position={[x, 0.02, z]}>
+          
+          {/* 3D positioned HTML text label */}
+          <Html
+            position={[0, 0.1, 0]}
+            rotation={[-Math.PI / 2, 0, 0]}
+            transform
+            occlude
+            distanceFactor={5}
+            center
+          >
+            <div className="text-black opacity-25 text-6xl font-bold px-10 py-10 pointer-events-none">
+              {cellId}
+            </div>
+          </Html>
+        </group>
+      );
+    }
+  }
+  
+  return <>{labels}</>;
+}
+
+// Temporarily commented out for grid mapping phase
+/*
 function Building({ position, size, color }: { position: [number, number, number], size: [number, number, number], color: string }) {
   const meshRef = useRef<any>(null);
   
@@ -39,26 +87,21 @@ function Building({ position, size, color }: { position: [number, number, number
 function Hive({ position }: { position: [number, number, number] }) {
   return (
     <group position={position}>
-      {/* Main hive structure */}
       <mesh position={[0, 0.5, 0]} castShadow receiveShadow>
-        <cylinderGeometry args={[0.8, 1, 1.5, 6]} />
+        <cylinderGeometry args={[1, 1, 1.5, 6]} />
         <meshLambertMaterial color="#fbbf24" />
-      </mesh>
-      {/* Hive roof */}
-      <mesh position={[0, 1.4, 0]} castShadow receiveShadow>
-        <coneGeometry args={[1, 0.6, 6]} />
-        <meshLambertMaterial color="#f59e0b" />
       </mesh>
     </group>
   );
 }
+*/
 
 function DynamicLighting() {
   const sunRef = useRef<THREE.DirectionalLight>(null);
   const moonRef = useRef<THREE.DirectionalLight>(null);
 
   useFrame((state) => {
-    const time = state.clock.getElapsedTime() * 0.01; // Much slower cycle - reduced from 0.05
+    const time = state.clock.getElapsedTime() * 0.01;
     
     // Sun position - circular path around the scene
     const sunX = Math.cos(time) * 30;
@@ -143,6 +186,9 @@ function DynamicLighting() {
 }
 
 function Scene() {
+  // const gridManager = useMemo(() => new GridManager(), []);
+  // const allCells = gridManager.getAllCells();
+
   return (
     <>
       {/* Dynamic Lighting System */}
@@ -151,38 +197,83 @@ function Scene() {
       {/* Ground - larger field */}
       <Ground />
       
-      {/* Grid System for building placement */}
+      {/* Grid System for building placement with labels */}
       <GridSystem />
 
-      {/* Buildings organized in a grid pattern (2-unit spacing) */}
-      <Building position={[-8, 0.5, -8]} size={[1.5, 1, 2]} color="#8b5cf6" />
-      <Building position={[-4, 0.75, -8]} size={[2, 1.5, 1.5]} color="#ef4444" />
-      <Building position={[0, 0.25, -8]} size={[1, 0.5, 1]} color="#06b6d4" />
-      <Building position={[4, 1, -8]} size={[1.8, 2, 1.2]} color="#f97316" />
-      <Building position={[8, 0.4, -8]} size={[1.2, 0.8, 1]} color="#a855f7" />
-
-      <Building position={[-8, 0.3, -4]} size={[1, 0.6, 1.5]} color="#22c55e" />
-      <Building position={[-4, 0.15, -4]} size={[0.8, 0.3, 0.8]} color="#ec4899" />
-      <Building position={[4, 0.2, -4]} size={[0.6, 0.4, 0.6]} color="#fbbf24" />
-      <Building position={[8, 0.3, -4]} size={[0.8, 0.6, 0.8]} color="#f97316" />
-
-      {/* Hives organized in grid pattern */}
-      <Hive position={[-6, 0, -6]} />
-      <Hive position={[-2, 0, -6]} />
-      <Hive position={[2, 0, -6]} />
-      <Hive position={[6, 0, -6]} />
-      
-      <Hive position={[-6, 0, -2]} />
-      <Hive position={[2, 0, -2]} />
-      <Hive position={[6, 0, -2]} />
-      
-      <Hive position={[-4, 0, 2]} />
-      <Hive position={[0, 0, 2]} />
-      <Hive position={[4, 0, 2]} />
-
-      {/* Decorative elements on grid */}
-      <Building position={[-8, 0.2, 4]} size={[0.6, 0.4, 0.6]} color="#fbbf24" />
-      <Building position={[8, 0.3, 4]} size={[0.8, 0.6, 0.8]} color="#f97316" />
+      {/* Buildings and objects temporarily disabled for grid mapping */}
+      {/* 
+      {allCells.map((cell) => {
+        const [x, y, z] = cell.position;
+        
+        switch (cell.type) {
+          case 'hive':
+            return <Hive key={cell.id} position={[x, y, z]} />;
+          
+          case 'lab':
+            return (
+              <BuildingComponent 
+                key={cell.id}
+                buildingType="research_lab"
+                position={[x, y, z]}
+                level={cell.level}
+              />
+            );
+          
+          case 'depot':
+            return (
+              <BuildingComponent 
+                key={cell.id}
+                buildingType="honey_extractor"
+                position={[x, y, z]}
+                level={cell.level}
+              />
+            );
+          
+          case 'storage':
+            return (
+              <BuildingComponent 
+                key={cell.id}
+                buildingType="honey_extractor"
+                position={[x, y, z]}
+                level={cell.level}
+              />
+            );
+          
+          case 'colony':
+            return (
+              <BuildingComponent 
+                key={cell.id}
+                buildingType="basic_hive"
+                position={[x, y, z]}
+                level={cell.level}
+              />
+            );
+          
+          case 'environment':
+            return (
+              <Building 
+                key={cell.id}
+                position={[x, y + 0.5, z]}
+                size={[0.8, 1.5, 0.8]}
+                color="#22c55e"
+              />
+            );
+          
+          case 'path':
+            // Path cells can have vehicles
+            return cell.objectIds.length > 0 ? (
+              <VehicleComponent 
+                key={cell.id}
+                vehicleType="honey_truck"
+                position={[x, y, z]}
+              />
+            ) : null;
+          
+          default:
+            return null;
+        }
+      })}
+      */}
     </>
   );
 }
@@ -205,14 +296,15 @@ export function GameScene() {
     const deltaX = event.clientX - previousMouse.current.x;
     const deltaY = event.clientY - previousMouse.current.y;
 
-    // Pan the camera with smooth movement and better limits
+    // Pan the camera with correct direction mapping
     const panSpeed = 0.03;
-    const maxPan = 12; // Increased pan range
+    const maxPan = 12;
 
+    // Fix direction: mouse right = camera moves right, mouse up = camera moves up (negative Z)
     cameraPosition.current.x = Math.max(-maxPan, Math.min(maxPan, 
-      cameraPosition.current.x - deltaX * panSpeed));
+      cameraPosition.current.x + deltaX * panSpeed));
     cameraPosition.current.z = Math.max(-maxPan, Math.min(maxPan, 
-      cameraPosition.current.z - deltaY * panSpeed));
+      cameraPosition.current.z + deltaY * panSpeed));
 
     previousMouse.current = { x: event.clientX, y: event.clientY };
   };
@@ -243,6 +335,7 @@ export function GameScene() {
     const panSpeed = 0.03;
     const maxPan = 12;
 
+    // Fix direction for touch as well
     cameraPosition.current.x = Math.max(-maxPan, Math.min(maxPan, 
       cameraPosition.current.x - deltaX * panSpeed));
     cameraPosition.current.z = Math.max(-maxPan, Math.min(maxPan, 
@@ -271,17 +364,26 @@ export function GameScene() {
       <Canvas
         shadows
         camera={{ 
-          position: [15, 12, 15], 
-          fov: 45,
-          near: 0.1,
-          far: 100
+          position: [0, 8, 0], // x is left/right, y is up/down, z is forward/back
+          fov: 80,
+          near: 0.5,
+          far: 50
         }}
-        style={{ background: 'linear-gradient(to bottom, #87CEEB 0%, #98FB98 100%)' }}
-        onCreated={({ camera }) => {
+        style={{ background: '#87CEEB' }}
+        onCreated={({ camera, gl }) => {
+          // Disable zoom and rotation completely
+          gl.domElement.addEventListener('wheel', (e) => e.preventDefault(), { passive: false });
+          gl.domElement.addEventListener('touchstart', (e) => {
+            if (e.touches.length > 1) e.preventDefault();
+          }, { passive: false });
+          gl.domElement.addEventListener('touchmove', (e) => {
+            if (e.touches.length > 1) e.preventDefault();
+          }, { passive: false });
+          
           // Fixed camera that only moves position, not rotation
           const updateCamera = () => {
-            camera.position.x = 15 + cameraPosition.current.x;
-            camera.position.z = 15 + cameraPosition.current.z;
+            camera.position.x = 0 + cameraPosition.current.x;
+            camera.position.z = 5 + cameraPosition.current.z;
             // Always look at the offset center of the scene
             camera.lookAt(cameraPosition.current.x, 0, cameraPosition.current.z);
           };

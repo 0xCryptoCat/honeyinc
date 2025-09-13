@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 13,
+            "activePatchIndex": 14,
             "patches": [
                 {
                     "date": 1757495614694,
@@ -60,6 +60,10 @@
                 {
                     "date": 1757697678910,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,5 @@\n-import { Star, ShoppingCart, TrendingUp, Settings } from \"lucide-react\";\n+import { Star, ShoppingCart, TrendingUp, Settings, Building } from \"lucide-react\";\n import { HoneycombButton } from \"./HoneycombButton\";\n \n interface ActionButtonsProps {\n   layoutMode: \"compact\" | \"expanded\";\n@@ -8,11 +8,12 @@\n }\n \n export function ActionButtons({ layoutMode, onButtonClick, onLayoutToggle }: ActionButtonsProps) {\n   const buttons = [\n-    { icon: Star, action: \"boosts\", label: \"Boosts\" },\n+    { icon: Star, action: \"boosts\", label: \"Epic Research\" },\n+    { icon: TrendingUp, action: \"tier-upgrade\", label: \"Research\" },\n+    { icon: Building, action: \"upgrade\", label: \"Upgrades\" },\n     { icon: ShoppingCart, action: \"shop\", label: \"Shop\" },\n-    { icon: TrendingUp, action: \"tier-upgrade\", label: \"Tier Upgrade\" },\n     { icon: Settings, action: \"settings\", label: \"Settings\" },\n   ];\n \n   if (layoutMode === \"compact\") {\n"
+                },
+                {
+                    "date": 1757744986410,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,5 @@\n-import { Star, ShoppingCart, TrendingUp, Settings, Building } from \"lucide-react\";\n+import { Star, TrendingUp, Settings, Building } from \"lucide-react\";\n import { HoneycombButton } from \"./HoneycombButton\";\n \n interface ActionButtonsProps {\n   layoutMode: \"compact\" | \"expanded\";\n@@ -8,12 +8,11 @@\n }\n \n export function ActionButtons({ layoutMode, onButtonClick, onLayoutToggle }: ActionButtonsProps) {\n   const buttons = [\n-    { icon: Star, action: \"boosts\", label: \"Epic Research\" },\n-    { icon: TrendingUp, action: \"tier-upgrade\", label: \"Research\" },\n+    { icon: Star, action: \"boosts\", label: \"Boosts\" },\n+    { icon: TrendingUp, action: \"research\", label: \"Research\" },\n     { icon: Building, action: \"upgrade\", label: \"Upgrades\" },\n-    { icon: ShoppingCart, action: \"shop\", label: \"Shop\" },\n     { icon: Settings, action: \"settings\", label: \"Settings\" },\n   ];\n \n   if (layoutMode === \"compact\") {\n@@ -94,9 +93,9 @@\n             </div>\n           </div>\n           \n           {/* Last two buttons */}\n-          {buttons.slice(2, 4).map((button, index) => (\n+          {buttons.slice(2).map((button, index) => (\n             <HoneycombButton\n               key={index + 2}\n               icon={button.icon}\n               onClick={() => onButtonClick?.(button.action)}\n"
                 }
             ],
             "date": 1757495614694,

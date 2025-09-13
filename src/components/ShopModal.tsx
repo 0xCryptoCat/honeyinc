@@ -154,25 +154,36 @@ export function ShopModal({ isOpen, onClose, currentCoins = 1247, onPurchase, on
           </div>
         </div>
 
-        {/* Tab Navigation */}
+        {/* Tab Navigation - Toggle Switch Style */}
         <div className="flex mb-6 bg-amber-200/50 p-1 rounded-xl">
-          {tabs.map((tab) => {
-            const Icon = tab.icon;
-            return (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`flex-1 py-2 px-3 rounded-lg text-sm font-bold transition-all duration-200 flex items-center justify-center space-x-1 ${
-                  activeTab === tab.id
-                    ? "bg-gradient-to-r from-amber-400 to-amber-500 text-white shadow-lg"
-                    : "bg-white/50 text-amber-800 hover:bg-white/80"
-                }`}
-              >
-                <Icon className="w-4 h-4" />
-                <span>{tab.label}</span>
-              </button>
-            );
-          })}
+          <div className="relative flex w-full">
+            {/* Sliding indicator */}
+            <div 
+              className="absolute top-1 left-1 bottom-1 bg-gradient-to-r from-amber-400 to-amber-500 rounded-lg shadow-lg transition-transform duration-300 ease-out"
+              style={{
+                width: '50%',
+                transform: `translateX(${activeTab === 'boosts' ? '100%' : '0%'})`
+              }}
+            />
+            
+            {tabs.map((tab) => {
+              const Icon = tab.icon;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`relative flex-1 py-2 px-3 rounded-lg text-sm font-bold transition-all duration-200 flex items-center justify-center space-x-1 z-10 ${
+                    activeTab === tab.id
+                      ? "text-white"
+                      : "text-amber-800 hover:text-amber-600"
+                  }`}
+                >
+                  <Icon className="w-4 h-4" />
+                  <span>{tab.label}</span>
+                </button>
+              );
+            })}
+          </div>
         </div>
 
         {activeTab === "shop" && (

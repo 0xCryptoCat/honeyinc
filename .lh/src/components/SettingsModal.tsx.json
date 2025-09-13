@@ -3,11 +3,15 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 0,
+            "activePatchIndex": 1,
             "patches": [
                 {
                     "date": 1757692892562,
                     "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1757743664936,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -74,27 +74,38 @@\n             </div>\n           </div>\n         </div>\n \n-        {/* Tab Navigation */}\n+        {/* Tab Navigation - Toggle Switch Style */}\n         <div className=\"flex mb-6 bg-amber-200/50 p-1 rounded-xl\">\n-          {tabs.map((tab) => {\n-            const Icon = tab.icon;\n-            return (\n-              <button\n-                key={tab.id}\n-                onClick={() => setActiveTab(tab.id)}\n-                className={`flex-1 py-2 px-3 rounded-lg text-sm font-bold transition-all duration-200 flex items-center justify-center space-x-1 ${\n-                  activeTab === tab.id\n-                    ? \"bg-gradient-to-r from-amber-400 to-amber-500 text-white shadow-lg\"\n-                    : \"bg-white/50 text-amber-800 hover:bg-white/80\"\n-                }`}\n-              >\n-                <Icon className=\"w-4 h-4\" />\n-                <span>{tab.label}</span>\n-              </button>\n-            );\n-          })}\n+          <div className=\"relative flex w-full\">\n+            {/* Sliding indicator */}\n+            <div \n+              className=\"absolute top-1 left-1 bottom-1 bg-gradient-to-r from-amber-400 to-amber-500 rounded-lg shadow-lg transition-transform duration-300 ease-out\"\n+              style={{\n+                width: '50%',\n+                transform: `translateX(${activeTab === 'statistics' ? '100%' : '0%'})`\n+              }}\n+            />\n+            \n+            {tabs.map((tab) => {\n+              const Icon = tab.icon;\n+              return (\n+                <button\n+                  key={tab.id}\n+                  onClick={() => setActiveTab(tab.id)}\n+                  className={`relative flex-1 py-2 px-3 rounded-lg text-sm font-bold transition-all duration-200 flex items-center justify-center space-x-1 z-10 ${\n+                    activeTab === tab.id\n+                      ? \"text-white\"\n+                      : \"text-amber-800 hover:text-amber-600\"\n+                  }`}\n+                >\n+                  <Icon className=\"w-4 h-4\" />\n+                  <span>{tab.label}</span>\n+                </button>\n+              );\n+            })}\n+          </div>\n         </div>\n \n         {activeTab === \"settings\" && (\n           <div className=\"space-y-4 max-h-80 overflow-y-auto\">\n"
                 }
             ],
             "date": 1757692892562,
